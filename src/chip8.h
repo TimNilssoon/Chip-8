@@ -2,7 +2,7 @@
 #define CHIP8_H
 #include <stdlib.h>
 
-// Chip8 is an ADT of a chip8_t struct pointer to 
+// Chip8 is an ADT of a chip8_t struct pointer
 typedef struct chip8_t *Chip8;
 
 Chip8 chip8_create(void);
