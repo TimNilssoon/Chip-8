@@ -1,5 +1,8 @@
 # Build files
-/build/
+build/
 
 # Executables
 chip8
+
+# vscode
+.vscode/
