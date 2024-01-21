@@ -11,8 +11,9 @@ void chip8_initialize(void)
         fprintf(stderr, "Chip8 error: Could not initialize Chip-8 Core");
         exit(EXIT_FAILURE);
     }
-    
+
     chip8_core_initialize(chipCore);
+    // chip8_core_loadRom(chipCore, "");
 
     //  Initialize SDL2
 }
