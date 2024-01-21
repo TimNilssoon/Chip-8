@@ -1,8 +1,6 @@
 #include "chip8_core.h"
-#include <stdint.h>
-#include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
-#include <assert.h>
 
 #define MEM_SIZE 4096
 #define V_REGS 16
@@ -47,7 +45,6 @@ void chip8_core_destroy(Chip8Core c)
 
 void chip8_core_initialize(Chip8Core c)
 {
-    assert(c != NULL);
     // Start execution at 0x200
     c->pc = 0x200;
 
@@ -60,12 +57,25 @@ void chip8_core_cycle(Chip8Core c)
     // Bitwise OR together byte at program counter and byte at program counter + 1 to form the opcode
     c->opcode = (c->memory[c->pc] << 8) | c->memory[c->pc + 1];
 
-    // Increment program counter with 2 since one opcode occupies two bytes
+    // Increment program counter with 2 since an opcode occupies two bytes
     c->pc += 2;
 
     // Decode and execute opcode
 
     // Update timers
+}
+
+void chip8_load_rom(Chip8Core c, const char *path)
+{
+    FILE *fp = fopen(path, "rb");
+    if (fp == NULL) {
+        perror("Could not open file");
+        exit(EXIT_FAILURE);
+    }
+    
+
+    
+    fclose(fp);
 }
 
 const uint16_t *chip8_core_getDisplayBuffer(const Chip8Core c)
