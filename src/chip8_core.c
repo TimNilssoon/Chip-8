@@ -1,4 +1,5 @@
 #include "chip8_core.h"
+#include "chip8_opcodeHandler.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -63,6 +64,7 @@ void chip8_core_cycle(Chip8Core c)
     c->pc += 2;
 
     // Decode and execute opcode
+    chip8_opcodeHandler_execute(c);
 
     // Update timers
 }
@@ -107,6 +109,12 @@ size_t chip8_core_loadRom(Chip8Core c, const char *path)
 const uint16_t *chip8_core_getDisplayBuffer(const Chip8Core c)
 {
     return c->displayBuffer;
+}
+
+// Isn't declared in chip8_core.h. It's instead forward declared in chip8_opcodeHandler.h
+const uint16_t *chip8_core_getOpcode(const Chip8Core c)
+{
+    return &c->opcode;
 }
 
 static void loadFontSprites(struct chip8_core_t *c)
