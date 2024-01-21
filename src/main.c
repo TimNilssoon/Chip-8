@@ -4,14 +4,9 @@
 
 int main(void)
 {
-    Chip8 chip = chip8_create();
-    if (chip == NULL) {
-        fprintf(stderr, "Chip-8 Error: Could not allocate memory\n");
-        exit(EXIT_FAILURE);
-    }
-    chip8_initialize(chip);
+    chip8_initialize();
+    chip8_run();
 
-    chip8_destroy(chip);
-
+    chip8_quit();
     exit(EXIT_SUCCESS);
 }
