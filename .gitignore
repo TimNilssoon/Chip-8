@@ -6,3 +6,6 @@ chip8
 
 # vscode
 .vscode/
+
+# Roms
+roms/
