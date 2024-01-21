@@ -9,6 +9,8 @@
 #define KEYS 16
 
 #define FONT_SPRITE_OFFSET 0x50
+#define ROM_MEM_OFFSET 0x200
+#define ROM_MEM_END 0xFFF
 
 struct chip8_core_t {
     uint16_t stack[STACK_SIZE];
@@ -45,8 +47,8 @@ void chip8_core_destroy(Chip8Core c)
 
 void chip8_core_initialize(Chip8Core c)
 {
-    // Start execution at 0x200
-    c->pc = 0x200;
+    // Start execution at ROM address
+    c->pc = ROM_MEM_OFFSET;
 
     loadFontSprites(c);
 }
@@ -65,7 +67,7 @@ void chip8_core_cycle(Chip8Core c)
     // Update timers
 }
 
-void chip8_core_loadRom(Chip8Core c, const char *path)
+size_t chip8_core_loadRom(Chip8Core c, const char *path)
 {
     FILE *fp = fopen(path, "rb");
     if (fp == NULL) {
@@ -73,9 +75,33 @@ void chip8_core_loadRom(Chip8Core c, const char *path)
         exit(EXIT_FAILURE);
     }
     
+    // Determine file size
+    fseek(fp, 0, SEEK_END);
+    size_t fileSize = (size_t)ftell(fp);
+    fseek(fp, 0, SEEK_SET);
 
-    
+    const size_t maxFileSize = ROM_MEM_END - ROM_MEM_OFFSET;
+
+    if (fileSize > maxFileSize) {
+        fprintf(stderr, "Could not load file: file is too large! Attempted to load %zu bytes. Maximum file size is %zu\n", fileSize, maxFileSize);
+        fclose(fp);
+        exit(EXIT_FAILURE);
+    }
+
+    uint8_t *buffer = malloc(fileSize);
+    if (buffer == NULL) {
+        perror("Error allocating buffer");
+        fclose(fp);
+        exit(EXIT_FAILURE);
+    }
+
+    size_t bytesRead = fread(buffer, 1, fileSize, fp);
     fclose(fp);
+
+    memcpy(c->memory + ROM_MEM_OFFSET, buffer, bytesRead);
+    free(buffer);
+
+    return bytesRead;
 }
 
 const uint16_t *chip8_core_getDisplayBuffer(const Chip8Core c)
