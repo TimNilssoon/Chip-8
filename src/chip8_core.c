@@ -29,7 +29,7 @@ struct chip8_core_t {
     uint8_t sp;
 };
 
-void loadFontSprites(struct chip8_core_t *c);
+static void loadFontSprites(struct chip8_core_t *c);
 
 Chip8Core chip8_core_create(void)
 {
@@ -109,7 +109,7 @@ const uint16_t *chip8_core_getDisplayBuffer(const Chip8Core c)
     return c->displayBuffer;
 }
 
-void loadFontSprites(struct chip8_core_t *c)
+static void loadFontSprites(struct chip8_core_t *c)
 {
     uint8_t fontSprites[] = { 
 	0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
