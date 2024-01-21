@@ -65,7 +65,7 @@ void chip8_core_cycle(Chip8Core c)
     // Update timers
 }
 
-void chip8_load_rom(Chip8Core c, const char *path)
+void chip8_core_loadRom(Chip8Core c, const char *path)
 {
     FILE *fp = fopen(path, "rb");
     if (fp == NULL) {
