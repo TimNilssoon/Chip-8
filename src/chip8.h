@@ -1,6 +1,5 @@
 #ifndef CHIP8_H
 #define CHIP8_H
-#include <stdlib.h>
 #include <stdint.h>
 
 #define DISPLAY_WIDTH 64
