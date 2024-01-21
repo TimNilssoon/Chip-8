@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 
 #define MEM_SIZE 4096
 #define V_REGS 16
@@ -46,7 +47,7 @@ void chip8_destroy(Chip8 c)
 
 void chip8_initialize(Chip8 c)
 {
-    assert();
+    assert(c != NULL);
     c->pc = 0x200;
 
     load_font_sprites(c);
