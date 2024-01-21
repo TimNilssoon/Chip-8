@@ -10,7 +10,7 @@ int main(void)
     }
     chip8_initialize(chip);
 
-    chip8_delete(chip);
+    chip8_destroy(chip);
 
     exit(EXIT_SUCCESS);
 }

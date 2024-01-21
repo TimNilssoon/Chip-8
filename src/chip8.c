@@ -39,13 +39,14 @@ Chip8 chip8_create(void)
     return c;
 }
 
-void chip8_delete(Chip8 c)
+void chip8_destroy(Chip8 c)
 {
     free(c);
 }
 
 void chip8_initialize(Chip8 c)
 {
+    assert();
     c->pc = 0x200;
 
     load_font_sprites(c);

@@ -6,7 +6,7 @@
 typedef struct chip8_t *Chip8;
 
 Chip8 chip8_create(void);
-void chip8_delete(Chip8 c);
+void chip8_destroy(Chip8 c);
 void chip8_initialize(Chip8 c);
 //void chip8_load_rom(Chip8 c, const char *path);
 
