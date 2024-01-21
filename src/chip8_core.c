@@ -51,9 +51,6 @@ void chip8_core_initialize(Chip8Core c)
     // Start execution at 0x200
     c->pc = 0x200;
 
-    c->memory[0x200] = 0x15;
-    c->memory[0x201] = 0x12;
-
     loadFontSprites(c);
 }
 
