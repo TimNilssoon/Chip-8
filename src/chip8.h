@@ -14,7 +14,7 @@ void chip8_destroy(Chip8 c);
 void chip8_initialize(Chip8 c);
 //void chip8_load_rom(Chip8 c, const char *path);
 
-// Returns the display buffer of the Chip-8 (uint16_t * 2048)
+// Returns const pointer to the display buffer
 const uint16_t *chip8_get_display_buffer(const Chip8 c);
 
 #endif
