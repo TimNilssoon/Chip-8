@@ -7,7 +7,7 @@
 #define MEM_SIZE 4096
 #define V_REGS 16
 #define STACK_SIZE 16
-#define DISPLAY_BUFFER_SIZE 64 * 32
+#define DISPLAY_BUFFER_SIZE  (DISPLAY_WIDTH * DISPLAY_HEIGHT)
 #define KEYS 16
 
 #define FONT_SPRITE_OFFSET 0x50
@@ -51,6 +51,11 @@ void chip8_initialize(Chip8 c)
     c->pc = 0x200;
 
     load_font_sprites(c);
+}
+
+const uint16_t *chip8_get_display_buffer(const Chip8 c)
+{
+    return c->display_buffer;
 }
 
 void load_font_sprites(struct chip8_t *c)
