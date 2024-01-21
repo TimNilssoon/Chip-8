@@ -7,6 +7,11 @@ void chip8_initialize(void)
 {
     // Create and initialize chip8_core
     chipCore = chip8_core_create();
+    if (chipCore == NULL) {
+        fprintf(stderr, "Chip8 error: Could not initialize Chip-8 Core");
+        exit(EXIT_FAILURE);
+    }
+    
     chip8_core_initialize(chipCore);
 
     //  Initialize SDL2
