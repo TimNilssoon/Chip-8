@@ -5,6 +5,9 @@
 #include <string.h>
 #include <time.h>
 
+#define DISPLAY_WIDTH 64
+#define DISPLAY_HEIGHT 32
+
 #define MEM_SIZE 4096
 #define V_REGS 16
 #define STACK_SIZE 16

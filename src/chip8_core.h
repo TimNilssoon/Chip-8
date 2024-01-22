@@ -4,9 +4,6 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-#define DISPLAY_WIDTH 64
-#define DISPLAY_HEIGHT 32
-
 // Chip8Core is an ADT of a chip8_core_t struct pointer
 typedef struct chip8_core_t *Chip8Core;
 
