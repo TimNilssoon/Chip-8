@@ -1,6 +1,6 @@
 #include "chip8_core.h"
 #include "chip8_opcodeHandler.h"
-#include "chip8_core_opcodefuncs.h"
+#include "chip8_core_instructions.h"
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
@@ -119,7 +119,7 @@ size_t chip8_core_loadRom(Chip8Core c, const char *path)
 
 static void loadFontSprites(struct chip8_core_t *c)
 {
-    uint8_t fontSprites[] = { 
+    const uint8_t fontSprites[] = { 
 	0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
 	0x20, 0x60, 0x20, 0x20, 0x70, // 1
 	0xF0, 0x10, 0xF0, 0x80, 0xF0, // 2
@@ -198,6 +198,68 @@ void chip8_core_ADDVXKK(Chip8Core c)
     VREGISTER_X += OPCODE_KK;
 }
 
+void chip8_core_LDVXVY(Chip8Core c)
+{
+    VREGISTER_X = VREGISTER_Y;
+}
+
+void chip8_core_ORVXVY(Chip8Core c)
+{
+    VREGISTER_X |= VREGISTER_Y;
+}
+
+void chip8_core_ANDVXVY(Chip8Core c)
+{
+    VREGISTER_X &= VREGISTER_Y;
+}
+
+void chip8_core_XORVXVY(Chip8Core c)
+{
+    VREGISTER_X ^= VREGISTER_Y;
+}
+
+void chip8_core_ADDVXVY(Chip8Core c)
+{
+    if (VREGISTER_X + VREGISTER_Y > 0xFF)
+        c->vRegisters[0xF] = 1;
+    else
+        c->vRegisters[0xF] = 0;
+
+    VREGISTER_X += VREGISTER_Y;
+}
+
+void chip8_core_SUBVXVY(Chip8Core c)
+{
+    if (VREGISTER_X > VREGISTER_Y)
+        c->vRegisters[0xF] = 1;
+    else
+        c->vRegisters[0xF] = 0;
+
+    VREGISTER_X -= VREGISTER_Y;
+}
+
+void chip8_core_SHRVXVY(Chip8Core c)
+{
+    c->vRegisters[0xF] = (VREGISTER_X & 0x1);
+    VREGISTER_X >>= 1;
+}
+
+void chip8_core_SUBNVXVY(Chip8Core c)
+{
+    if (VREGISTER_Y > VREGISTER_X)
+        c->vRegisters[0xF] = 1;
+    else
+        c->vRegisters[0xF] = 0;
+
+    VREGISTER_X = VREGISTER_Y - VREGISTER_X;
+}
+
+void chip8_core_SHLVXVY(Chip8Core c)
+{
+    c->vRegisters[0xF] = (VREGISTER_X & 0x80);
+    VREGISTER_X <<= 1;
+}
+
 void chip8_core_LDINNN(Chip8Core c)
 {
     c->iRegister = OPCODE_NNN;
@@ -241,7 +303,7 @@ void chip8_core_LDVXDT(Chip8Core c)
 
 void chip8_core_LDVXK(Chip8Core c)
 {
-    // TODO: Implement instruction:     
+    // TODO: Implement instruction
 }
 
 void chip8_core_LDDTVX(Chip8Core c)
@@ -280,6 +342,11 @@ void chip8_core_LDIVX(Chip8Core c)
 void chip8_core_LDVXI(Chip8Core c)
 {
     memcpy(c->vRegisters, c->memory + c->iRegister, VREGISTER_X + 1);
+}
+
+void chip8_core_DRWVXVY(Chip8Core c)
+{
+    // TODO: Implement instruction
 }
 
 const uint16_t *chip8_core_getOpcode(const Chip8Core c)

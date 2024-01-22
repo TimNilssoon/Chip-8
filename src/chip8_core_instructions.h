@@ -16,8 +16,17 @@ void chip8_core_SNEVXKK(Chip8Core c);
 void chip8_core_SEVXVY(Chip8Core c);
 void chip8_core_LDVXKK(Chip8Core c);
 void chip8_core_ADDVXKK(Chip8Core c);
-void chip8_core_LDINNN(Chip8Core c);
+void chip8_core_LDVXVY(Chip8Core c);
+void chip8_core_ORVXVY(Chip8Core c);
+void chip8_core_ANDVXVY(Chip8Core c);
+void chip8_core_XORVXVY(Chip8Core c);
+void chip8_core_ADDVXVY(Chip8Core c);
+void chip8_core_SUBVXVY(Chip8Core c);
+void chip8_core_SHRVXVY(Chip8Core c);
+void chip8_core_SUBNVXVY(Chip8Core c);
+void chip8_core_SHLVXVY(Chip8Core c);
 void chip8_core_SNEVXVY(Chip8Core c);
+void chip8_core_LDINNN(Chip8Core c);
 void chip8_core_JPV0NNN(Chip8Core c);
 void chip8_core_RNDVXKK(Chip8Core c);
 void chip8_core_SKPVX(Chip8Core c);
@@ -31,5 +40,6 @@ void chip8_core_LDFVX(Chip8Core c);
 void chip8_core_LDBVX(Chip8Core c);
 void chip8_core_LDIVX(Chip8Core c);
 void chip8_core_LDVXI(Chip8Core c);
+void chip8_core_DRWVXVY(Chip8Core c);
 
 #endif
