@@ -161,4 +161,33 @@ static void opcode0xE000(Chip8Core c, const uint16_t *opcode)
 
 static void opcode0xF000(Chip8Core c, const uint16_t *opcode)
 {
+    switch (*opcode & 0x00FF) {
+        case 0x0007: // 0xFX07 LD VX, DT - Set VX = delay timer value
+            chip8_core_LDVXDT(c);
+            break;
+        case 0x000A: // 0xFX0A LD VX, K - Wait for a key press, store the value of the key in VX
+            chip8_core_LDVXK(c);
+            break;
+        case 0x0015: // 0xFX15 LD DT, VX - Set the delay timer = VX
+            chip8_core_LDDTVX(c);
+            break;
+        case 0x0018: // 0xFX18 LD ST, VX - Set sound timer = VX
+            chip8_core_LDSTVX(c);
+            break;
+        case 0x001E: // 0xFX1E ADD I, VX - Set I = I + VX
+            chip8_core_ADDIVX(c);
+            break;
+        case 0x0029: // 0xFX29 LD F, VX - Set I = address of sprite for digit VX
+            chip8_core_LDFVX(c);
+            break;
+        case 0x0033: // 0xFX33 LD B, VX - Store BCD representation of VX in memory addresses I, I + 1 and I + 2
+            chip8_core_LDBVX(c);
+            break;
+        case 0x0055: // 0xFX55 LD [I], VX - Store registers V0 through VX in memory starting at address I
+            chip8_core_LDIVX(c);
+            break;
+        case 0x0065: // 0xFX65 LD VX, [I] - Read registers V0 through VX from memory starting at address I
+            chip8_core_LDVXI(c);
+            break;
+    }
 }

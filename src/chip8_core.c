@@ -14,7 +14,7 @@
 #define DISPLAY_BUFFER_SIZE (DISPLAY_WIDTH * DISPLAY_HEIGHT)
 #define KEYS 16
 
-#define FONT_SPRITE_OFFSET 0x50
+#define FONT_SPRITE_ADDR_OFFSET 0x50
 #define ROM_MEM_OFFSET 0x200
 #define ROM_MEM_END 0xFFF
 
@@ -138,7 +138,7 @@ static void loadFontSprites(struct chip8_core_t *c)
 	0xF0, 0x80, 0xF0, 0x80, 0x80  // F
 	};
 
-    memcpy(c->memory + FONT_SPRITE_OFFSET, fontSprites, sizeof(fontSprites));
+    memcpy(c->memory + FONT_SPRITE_ADDR_OFFSET, fontSprites, sizeof(fontSprites));
 }
 
 const uint16_t *chip8_core_getDisplayBuffer(const Chip8Core c)
@@ -232,6 +232,54 @@ void chip8_core_SKNPVX(Chip8Core c)
 {
     if (c->keys[VREGISTER_X] == 0)
         c->pc += 2;
+}
+
+void chip8_core_LDVXDT(Chip8Core c)
+{
+    VREGISTER_X = c->delayTimer;
+}
+
+void chip8_core_LDVXK(Chip8Core c)
+{
+    // TODO: Implement instruction:     
+}
+
+void chip8_core_LDDTVX(Chip8Core c)
+{
+    c->delayTimer = VREGISTER_X;
+}
+
+void chip8_core_LDSTVX(Chip8Core c)
+{
+    c->soundTimer = VREGISTER_X;
+}
+
+void chip8_core_ADDIVX(Chip8Core c)
+{
+    c->iRegister += VREGISTER_X;
+}
+
+void chip8_core_LDFVX(Chip8Core c)
+{
+    c->iRegister = FONT_SPRITE_ADDR_OFFSET + (0x5 * VREGISTER_X);
+}
+
+void chip8_core_LDBVX(Chip8Core c)
+{
+    // Places the hundreds digit in memory at location in I, the tens digit at location I+1, and the ones digit at location I+2
+    c->memory[c->iRegister] = (uint8_t)VREGISTER_X / 100;
+    c->memory[c->iRegister + 0x1] = VREGISTER_X / 10 % 10;
+    c->memory[c->iRegister + 0x2] = VREGISTER_X % 10;
+}
+
+void chip8_core_LDIVX(Chip8Core c)
+{
+    memcpy(c->memory + c->iRegister, c->vRegisters, VREGISTER_X + 1);
+}
+
+void chip8_core_LDVXI(Chip8Core c)
+{
+    memcpy(c->vRegisters, c->memory + c->iRegister, VREGISTER_X + 1);
 }
 
 const uint16_t *chip8_core_getOpcode(const Chip8Core c)
