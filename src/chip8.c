@@ -13,7 +13,7 @@ void chip8_initialize(void)
     }
 
     chip8_core_initialize(chipCore);
-    // chip8_core_loadRom(chipCore, "");
+    //chip8_core_loadRom(chipCore, "/home/ubuntu/repos/chip-8/roms/test_opcode.ch8");
 
     //  Initialize SDL2
 }
@@ -22,7 +22,8 @@ void chip8_initialize(void)
 // Calls chip8_core_cycle() and SDL2 functions
 void chip8_run(void)
 {
-    chip8_core_cycle(chipCore);
+    while (1)
+        chip8_core_cycle(chipCore);
 }
 
 void chip8_quit(void)

@@ -2,16 +2,23 @@
 #include "chip8_opcodeHandler.h"
 #include <stdio.h>
 #include <string.h>
+#include "chip8_core_access.h"
 
 #define MEM_SIZE 4096
 #define V_REGS 16
 #define STACK_SIZE 16
-#define DISPLAY_BUFFER_SIZE  (DISPLAY_WIDTH * DISPLAY_HEIGHT)
+#define DISPLAY_BUFFER_SIZE (DISPLAY_WIDTH * DISPLAY_HEIGHT)
 #define KEYS 16
 
 #define FONT_SPRITE_OFFSET 0x50
 #define ROM_MEM_OFFSET 0x200
 #define ROM_MEM_END 0xFFF
+
+#define VREGISTER_X c->vRegisters[((opcode & 0x0F00) >> 8)]
+#define VREGISTER_Y c->vRegisters[((opcode & 0x00F0) >> 4)]
+#define OPCODE_NNN c->opcode & 0x0FFF
+#define OPCODE_KK c->opcode & 0x00FF
+#define OPCODE_N c->opcode & 0x000F
 
 struct chip8_core_t {
     uint16_t stack[STACK_SIZE];
@@ -50,6 +57,11 @@ void chip8_core_initialize(Chip8Core c)
 {
     // Start execution at ROM address
     c->pc = ROM_MEM_OFFSET;
+
+    c->memory[0x200] = 0x00;
+    c->memory[0x201] = 0xE0;
+    c->memory[0x202] = 0x00;
+    c->memory[0x203] = 0xEE;
 
     loadFontSprites(c);
 }
@@ -111,7 +123,23 @@ const uint16_t *chip8_core_getDisplayBuffer(const Chip8Core c)
     return c->displayBuffer;
 }
 
-// Isn't declared in chip8_core.h. It's instead forward declared in chip8_opcodeHandler.h
+void chip8_core_clearDisplayBuffer(Chip8Core c)
+{
+    memset(c->displayBuffer, 0, sizeof(c->displayBuffer));
+}
+
+void chip8_core_returnFromSubroutine(Chip8Core c)
+{
+    c->sp--;
+    c->pc = c->stack[c->sp];
+    c->stack[c->sp] = 0x0;
+}
+
+void chip8_core_jumpToAddress(Chip8Core c)
+{
+    c->pc = OPCODE_NNN;
+}
+
 const uint16_t *chip8_core_getOpcode(const Chip8Core c)
 {
     return &c->opcode;
