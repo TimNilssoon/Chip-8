@@ -19,7 +19,7 @@ static void opcode0xD000(Chip8Core c, const uint16_t *opcode);
 static void opcode0xE000(Chip8Core c, const uint16_t *opcode);
 static void opcode0xF000(Chip8Core c, const uint16_t *opcode);
 
-OpcodeHandlerFunc opcodeHandlers[16] = {
+static OpcodeHandlerFunc opcodeHandlers[16] = {
     opcode0x0000,
     opcode0x1000,
     opcode0x2000,
