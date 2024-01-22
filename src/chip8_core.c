@@ -1,8 +1,9 @@
 #include "chip8_core.h"
 #include "chip8_opcodeHandler.h"
+#include "chip8_core_opcodefuncs.h"
 #include <stdio.h>
 #include <string.h>
-#include "chip8_core_opcodefuncs.h"
+#include <time.h>
 
 #define MEM_SIZE 4096
 #define V_REGS 16
@@ -14,11 +15,11 @@
 #define ROM_MEM_OFFSET 0x200
 #define ROM_MEM_END 0xFFF
 
-#define VREGISTER_X c->vRegisters[((opcode & 0x0F00) >> 8)]
-#define VREGISTER_Y c->vRegisters[((opcode & 0x00F0) >> 4)]
-#define OPCODE_NNN c->opcode & 0x0FFF
-#define OPCODE_KK c->opcode & 0x00FF
-#define OPCODE_N c->opcode & 0x000F
+#define VREGISTER_X (c->vRegisters[((c->opcode & 0x0F00) >> 8)])
+#define VREGISTER_Y (c->vRegisters[((c->opcode & 0x00F0) >> 4)])
+#define OPCODE_NNN (c->opcode & 0x0FFF)
+#define OPCODE_KK (c->opcode & 0x00FF)
+#define OPCODE_N (c->opcode & 0x000F)
 
 struct chip8_core_t {
     uint16_t stack[STACK_SIZE];
@@ -57,11 +58,6 @@ void chip8_core_initialize(Chip8Core c)
 {
     // Start execution at ROM address
     c->pc = ROM_MEM_OFFSET;
-
-    c->memory[0x200] = 0x00;
-    c->memory[0x201] = 0xE0;
-    c->memory[0x202] = 0x00;
-    c->memory[0x203] = 0xEE;
 
     loadFontSprites(c);
 }
@@ -118,33 +114,6 @@ size_t chip8_core_loadRom(Chip8Core c, const char *path)
     return bytesRead;
 }
 
-const uint16_t *chip8_core_getDisplayBuffer(const Chip8Core c)
-{
-    return c->displayBuffer;
-}
-
-void chip8_core_clearDisplayBuffer(Chip8Core c)
-{
-    memset(c->displayBuffer, 0, sizeof(c->displayBuffer));
-}
-
-void chip8_core_returnFromSubroutine(Chip8Core c)
-{
-    c->sp--;
-    c->pc = c->stack[c->sp];
-    c->stack[c->sp] = 0x0;
-}
-
-void chip8_core_jumpToAddress(Chip8Core c)
-{
-    c->pc = OPCODE_NNN;
-}
-
-const uint16_t *chip8_core_getOpcode(const Chip8Core c)
-{
-    return &c->opcode;
-}
-
 static void loadFontSprites(struct chip8_core_t *c)
 {
     uint8_t fontSprites[] = { 
@@ -167,4 +136,102 @@ static void loadFontSprites(struct chip8_core_t *c)
 	};
 
     memcpy(c->memory + FONT_SPRITE_OFFSET, fontSprites, sizeof(fontSprites));
+}
+
+const uint16_t *chip8_core_getDisplayBuffer(const Chip8Core c)
+{
+    return c->displayBuffer;
+}
+
+void chip8_core_CLS(Chip8Core c)
+{
+    memset(c->displayBuffer, 0, sizeof(c->displayBuffer));
+}
+
+void chip8_core_RET(Chip8Core c)
+{
+    c->sp--;
+    c->pc = c->stack[c->sp];
+    c->stack[c->sp] = 0x0;
+}
+
+void chip8_core_JPNNN(Chip8Core c)
+{
+    c->pc = OPCODE_NNN;
+}
+
+void chip8_core_CALLNNN(Chip8Core c)
+{
+    c->stack[c->sp] = c->pc;
+    c->sp++;
+    c->pc = OPCODE_NNN;
+}
+
+void chip8_core_SEVXKK(Chip8Core c)
+{
+    if (VREGISTER_X == OPCODE_KK)
+        c->pc += 2;
+}
+
+void chip8_core_SNEVXKK(Chip8Core c)
+{
+    if (VREGISTER_X != OPCODE_KK)
+        c->pc += 2;
+}
+
+void chip8_core_SEVXVY(Chip8Core c)
+{
+    if (VREGISTER_X != VREGISTER_Y)
+        c->pc += 2;  
+}
+
+void chip8_core_LDVXKK(Chip8Core c)
+{
+    VREGISTER_X = OPCODE_KK;
+}
+
+void chip8_core_ADDVXKK(Chip8Core c)
+{
+    VREGISTER_X += OPCODE_KK;
+}
+
+void chip8_core_LDINNN(Chip8Core c)
+{
+    c->iRegister = OPCODE_NNN;
+}
+
+void chip8_core_SNEVXVY(Chip8Core c)
+{
+    if (VREGISTER_X != VREGISTER_Y)
+	    c->pc += 2;
+}
+
+void chip8_core_JPV0NNN(Chip8Core c)
+{
+    c->pc = OPCODE_NNN + c->vRegisters[0];
+}
+
+void chip8_core_RNDVXKK(Chip8Core c)
+{
+    srand((unsigned int)time(NULL));
+    uint8_t randNum = rand() % 256;
+
+    VREGISTER_X = randNum & OPCODE_KK;
+}
+
+void chip8_core_SKPVX(Chip8Core c)
+{
+    if (c->keys[VREGISTER_X] != 0)
+	    c->pc += 2;
+}
+
+void chip8_core_SKNPVX(Chip8Core c)
+{
+    if (c->keys[VREGISTER_X] == 0)
+        c->pc += 2;
+}
+
+const uint16_t *chip8_core_getOpcode(const Chip8Core c)
+{
+    return &c->opcode;
 }
