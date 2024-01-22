@@ -112,6 +112,35 @@ static void opcode0x7000(Chip8Core c, const uint16_t *opcode)
 
 static void opcode0x8000(Chip8Core c, const uint16_t *opcode)
 {
+    switch (*opcode & 0x000F) {
+        case 0x0000: // 0x8XY0 LD VX, VY - Set VX = VY;
+            chip8_core_LDVXVY(c);
+            break;
+        case 0x0001: // 0x8XY1 OR VX, VY - Set VX = VX OR VY
+            chip8_core_ORVXVY(c);
+            break;
+        case 0x0002: // 0x8XY2 AND VX, VY - Set VX = VX AND VY
+            chip8_core_ANDVXVY(c);
+            break;
+        case 0x0003: // 0x8XY3 XOR VX, VY - Set VX = VX XOR VY
+            chip8_core_XORVXVY(c);
+            break;
+        case 0x0004: // 0x8XY4 ADD VX, VY - Set VX = VX + VY, set VF = carry
+            chip8_core_ADDVXVY(c);
+            break;
+        case 0x0005: // 0x8XY5 SUB VX, VY - Set VX = VX - VY, set VF = NOT borrow
+            chip8_core_SUBVXVY(c);
+            break;
+        case 0x0006: // 0x8XY6 SHR VX {, VY} - Set VX = VX SHR 1
+            chip8_core_SHRVXVY(c);
+            break;
+        case 0x0007: // 0x8XY7 SUBN VX, VY - Set VX = VY - VX, set VF = NOT borrow
+            chip8_core_SUBNVXVY(c);
+            break;
+        case 0x000E: // 0x8XYE SHL VX {, VY} - Set VX = VX SHL 1
+            chip8_core_SHLVXVY(c);
+            break;
+    }
 }
 
 // 0x9XY0 SNE VX, VY - Skip next instruction if VX != VY
