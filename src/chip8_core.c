@@ -2,7 +2,7 @@
 #include "chip8_opcodeHandler.h"
 #include <stdio.h>
 #include <string.h>
-#include "chip8_core_access.h"
+#include "chip8_core_opcodefuncs.h"
 
 #define MEM_SIZE 4096
 #define V_REGS 16

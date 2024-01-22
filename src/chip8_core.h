@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 #include <stdlib.h>
-#include "chip8_core_access.h"
+#include "chip8_core_opcodefuncs.h"
 
 #define DISPLAY_WIDTH 64
 #define DISPLAY_HEIGHT 32
