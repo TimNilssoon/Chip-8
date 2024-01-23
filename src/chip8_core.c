@@ -323,7 +323,7 @@ void chip8_core_ADDIVX(Chip8Core c)
 
 void chip8_core_LDFVX(Chip8Core c)
 {
-    c->iRegister = FONT_SPRITE_ADDR_OFFSET + (0x5 * VREGISTER_X);
+    c->iRegister = FONT_SPRITE_ADDR_OFFSET + 0x5 * VREGISTER_X;
 }
 
 void chip8_core_LDBVX(Chip8Core c)
