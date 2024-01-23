@@ -1,3 +1,4 @@
+#include "chip8_opcodeHandler.h"
 #include "chip8_core_instructions.h"
 
 typedef void (*OpcodeHandlerFunc)(Chip8Core c, const uint16_t *opcode);
