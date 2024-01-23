@@ -1,6 +1,5 @@
 #include "chip8_core.h"
 #include "chip8_opcodeHandler.h"
-#include "chip8_core_instructions.h"
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
