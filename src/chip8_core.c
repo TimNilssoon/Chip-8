@@ -58,7 +58,7 @@ void chip8_core_destroy(Chip8Core c)
 
 void chip8_core_initialize(Chip8Core c)
 {
-    // Start execution at ROM address
+    // Start program execution at ROM address
     c->pc = ROM_MEM_OFFSET;
 
     loadFontSprites(c);
