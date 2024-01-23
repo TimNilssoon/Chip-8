@@ -1,8 +1,12 @@
 # Build files
 build/
 
-# Executables
-chip8
+# Object files and build artifacts
+*.o
+*.out
+
+# Binaries
+bin/
 
 # vscode
 .vscode/
