@@ -14,8 +14,8 @@ void chip8_initialize(Chip8 *c)
 // Calls chip8_core_cycle() and SDL2 functions
 void chip8_run(Chip8 *c)
 {
-    while (1)
-        chip8_core_cycle(c->chipCore);
+    //while (1)
+    chip8_core_cycle(c->chipCore);
 }
 
 void chip8_destroy(Chip8 *c)

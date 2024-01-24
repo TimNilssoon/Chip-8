@@ -1,4 +1,5 @@
-#include "chip8.h"
+#include <stdio.h>
+#include "chip8/chip8.h"
 
 int main(void)
 {
