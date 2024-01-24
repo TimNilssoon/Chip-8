@@ -40,7 +40,7 @@ struct chip8_core_t {
     uint8_t sp;
 };
 
-static void loadFontSprites(struct chip8_core_t *c);
+static void loadFontSprites(Chip8Core c);
 
 Chip8Core chip8_core_create(void)
 {
@@ -116,7 +116,7 @@ size_t chip8_core_loadRom(Chip8Core c, const char *path)
     return bytesRead;
 }
 
-static void loadFontSprites(struct chip8_core_t *c)
+static void loadFontSprites(Chip8Core c)
 {
     const uint8_t fontSprites[] = { 
 	0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
