@@ -3,9 +3,7 @@
 
 #include <stdint.h>
 #include <stdlib.h>
-
-// Chip8Core is an ADT of a chip8_core_t struct pointer
-typedef struct chip8_core_t *Chip8Core;
+#include "chip8_chip8CoreType.h"
 
 const uint16_t *chip8_core_getDisplayBuffer(const Chip8Core c);
 
