@@ -1,11 +1,17 @@
 #include "chip8/chip8.h"
 
-int main(void)
+#define EXPECTED_ARGS 2
+
+int main(int argc, char *argv[])
 {
-    const char *filePath = "";
+    if (argc != EXPECTED_ARGS) {
+        fprintf(stderr, "Usage: %s <path to rom>\n", argv[0]);
+        return 1;
+    }
+    
     Chip8 chip8;
     chip8_initialize(&chip8);
-    chip8_loadRom(&chip8, filePath);
+    chip8_loadRom(&chip8, argv[1]);
     chip8_run(&chip8);
 
     chip8_destroy(&chip8);
