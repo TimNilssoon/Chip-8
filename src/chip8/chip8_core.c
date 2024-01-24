@@ -80,9 +80,9 @@ void chip8_core_cycle(Chip8Core c)
     // Update timers
 }
 
-size_t chip8_core_loadRom(Chip8Core c, const char *path)
+size_t chip8_core_loadRom(Chip8Core c, const char *filePath)
 {
-    FILE *fp = fopen(path, "rb");
+    FILE *fp = fopen(filePath, "rb");
     if (fp == NULL) {
         perror("Could not open file");
         exit(EXIT_FAILURE);

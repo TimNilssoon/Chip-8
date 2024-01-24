@@ -11,6 +11,6 @@ Chip8Core chip8_core_create(void);
 void chip8_core_destroy(Chip8Core c);
 void chip8_core_initialize(Chip8Core c);
 void chip8_core_cycle(Chip8Core c);
-size_t chip8_core_loadRom(Chip8Core c, const char *path);
+size_t chip8_core_loadRom(Chip8Core c, const char *filePath);
 
 #endif

@@ -1,5 +1,6 @@
 #include "chip8.h"
-#include <stdio.h>
+#include "chip8_core.h"
+#include <stdlib.h>
 
 static void chip8_initialize_core(Chip8 *c);
 static void chip8_initialize_sdl2(Chip8 *c);
@@ -24,6 +25,11 @@ void chip8_destroy(Chip8 *c)
     chip8_core_destroy(c->chipCore);
 
     // Clean up SDL2
+}
+
+size_t chip8_loadRom(Chip8 *c, const char *filePath)
+{
+    return chip8_core_loadRom(c->chipCore, filePath);
 }
 
 static void chip8_initialize_core(Chip8 *c)
