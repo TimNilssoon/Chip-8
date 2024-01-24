@@ -3,9 +3,11 @@
 
 #include "chip8_chip8CoreType.h"
 #include <stdio.h>
+#include <stdbool.h>
 
 typedef struct {
     Chip8Core chipCore;
+    bool running;
 } Chip8;
 
 void chip8_initialize(Chip8 *c);
