@@ -93,7 +93,7 @@ size_t chip8_core_loadRom(Chip8Core c, const char *filePath)
     const size_t maxFileSize = ROM_MEM_END - ROM_MEM_OFFSET;
 
     if (fileSize > maxFileSize) {
-        fprintf(stderr, "Could not load file: file is too large! Attempted to load %zu bytes. Maximum file size is %zu\n", fileSize, maxFileSize);
+        fprintf(stderr, "Could not load file: file is too large! Attempted to load %zu bytes. Maximum file size is %zu bytes\n", fileSize, maxFileSize);
         fclose(fp);
         exit(EXIT_FAILURE);
     }
