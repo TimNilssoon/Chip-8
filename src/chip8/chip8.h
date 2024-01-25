@@ -4,8 +4,11 @@
 #include "chip8_chip8CoreType.h"
 #include <stdio.h>
 #include <stdbool.h>
+#include <SDL.h>
 
 typedef struct {
+    SDL_Window *window;
+    SDL_Renderer *renderer;
     Chip8Core chipCore;
     bool running;
 } Chip8;
