@@ -1,6 +1,6 @@
 CC = gcc
-CFLAGS = -g -Wall -Wextra -Wpedantic -Wvla -Wfloat-equal -std=c11
-LDFLAGS = -lm
+CFLAGS = -g -Wall -Wextra -Wpedantic -Wvla -Wfloat-equal -std=c11 $(shell sdl2-config --cflags)
+LDFLAGS = -lm $(shell sdl2-config --libs)
 
 SRC_DIR = src
 CHIP8_DIR = $(SRC_DIR)/chip8
