@@ -2,6 +2,8 @@
 #include "chip8_core.h"
 #include <stdlib.h>
 
+#define RESOLUTION_SCALE_BY 15
+
 static void chip8_initialize_core(Chip8 *c);
 static void chip8_initialize_sdl2(Chip8 *c);
 
@@ -57,7 +59,11 @@ static void chip8_initialize_sdl2(Chip8 *c)
         exit(EXIT_SUCCESS);
     }
 
-    c->window = SDL_CreateWindow("CHIP-8", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, DISPLAY_WIDTH, DISPLAY_HEIGHT, 0);
+    c->window = SDL_CreateWindow("CHIP-8",
+                                SDL_WINDOWPOS_CENTERED,
+                                SDL_WINDOWPOS_CENTERED,
+                                DISPLAY_WIDTH * RESOLUTION_SCALE_BY,
+                                DISPLAY_HEIGHT * RESOLUTION_SCALE_BY, 0);
     if (c->window == NULL) {
         fprintf(stderr, "SDL_CreateWindow Error: %s\n", SDL_GetError());
         exit(EXIT_SUCCESS);

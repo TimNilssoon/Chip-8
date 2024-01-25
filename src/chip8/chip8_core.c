@@ -5,21 +5,21 @@
 #include <string.h>
 #include <time.h>
 
-#define MEM_SIZE 4096
-#define V_REGS 16
-#define STACK_SIZE 16
-#define DISPLAY_BUFFER_SIZE (DISPLAY_WIDTH * DISPLAY_HEIGHT)
-#define KEYS 16
+#define MEM_SIZE                4096
+#define V_REGS                  16
+#define STACK_SIZE              16
+#define DISPLAY_BUFFER_SIZE     (DISPLAY_WIDTH * DISPLAY_HEIGHT)
+#define KEYS                    16
 
 #define FONT_SPRITE_ADDR_OFFSET 0x50
-#define ROM_MEM_OFFSET 0x200
-#define ROM_MEM_END 0xFFF
+#define ROM_MEM_OFFSET          0x200
+#define ROM_MEM_END             0xFFF
 
-#define VREGISTER_X (c->vRegisters[((c->opcode & 0x0F00) >> 8)])
-#define VREGISTER_Y (c->vRegisters[((c->opcode & 0x00F0) >> 4)])
-#define OPCODE_NNN (c->opcode & 0x0FFF)
-#define OPCODE_KK (c->opcode & 0x00FF)
-#define OPCODE_N (c->opcode & 0x000F)
+#define VREGISTER_X             (c->vRegisters[((c->opcode & 0x0F00) >> 8)])
+#define VREGISTER_Y             (c->vRegisters[((c->opcode & 0x00F0) >> 4)])
+#define OPCODE_NNN              (c->opcode & 0x0FFF)
+#define OPCODE_KK               (c->opcode & 0x00FF)
+#define OPCODE_N                (c->opcode & 0x000F)
 
 struct chip8_core_t {
     uint16_t stack[STACK_SIZE];

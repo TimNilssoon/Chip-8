@@ -5,8 +5,8 @@
 #include <stdlib.h>
 #include "chip8_chip8CoreType.h"
 
-#define DISPLAY_WIDTH 64
-#define DISPLAY_HEIGHT 32
+#define DISPLAY_WIDTH   64
+#define DISPLAY_HEIGHT  32
 
 const uint16_t *chip8_core_getDisplayBuffer(const Chip8Core c);
 
