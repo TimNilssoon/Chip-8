@@ -54,7 +54,7 @@ static void chip8_initialize_core(Chip8 *c)
 // Initialize SDL2
 static void chip8_initialize_sdl2(Chip8 *c)
 {
-    if (SDL_Init(SDL_INIT_VIDEO)) {
+    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
         fprintf(stderr, "SDL_Init Error: %s\n", SDL_GetError());
         exit(EXIT_SUCCESS);
     }
