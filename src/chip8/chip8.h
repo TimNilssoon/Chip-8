@@ -7,9 +7,9 @@
 #include <SDL.h>
 
 typedef struct {
+    Chip8Core chipCore;
     SDL_Window *window;
     SDL_Renderer *renderer;
-    Chip8Core chipCore;
     bool running;
 } Chip8;
 
