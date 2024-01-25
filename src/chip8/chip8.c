@@ -2,15 +2,16 @@
 #include "chip8_core.h"
 #include <stdlib.h>
 
-#define RESOLUTION_SCALE_BY 15
+#define RESOLUTION_SCALE_BY 30
 
-static void chip8_initialize_core(Chip8 *c);
-static void chip8_initialize_sdl2(Chip8 *c);
+static void chip8_initializeCore(Chip8 *c);
+static void chip8_initializeSDL2(Chip8 *c);
+static void chip8_renderFrame(Chip8 *c);
 
 void chip8_initialize(Chip8 *c)
 {
-    chip8_initialize_core(c);
-    chip8_initialize_sdl2(c);
+    chip8_initializeCore(c);
+    chip8_initializeSDL2(c);
 
     c->running = true;
 }
@@ -19,8 +20,10 @@ void chip8_initialize(Chip8 *c)
 // Calls chip8_core_cycle() and SDL2 functions
 void chip8_run(Chip8 *c)
 {
-    while (c->running)
+    while (c->running) {
         chip8_core_cycle(c->chipCore);
+        chip8_renderFrame(c);
+    }
 }
 
 void chip8_destroy(Chip8 *c)
@@ -40,7 +43,7 @@ size_t chip8_loadRom(Chip8 *c, const char *filePath)
 }
 
 // Initialize chip8_core
-static void chip8_initialize_core(Chip8 *c)
+static void chip8_initializeCore(Chip8 *c)
 {
     c->chipCore = chip8_core_create();
     if (c->chipCore == NULL) {
@@ -49,14 +52,15 @@ static void chip8_initialize_core(Chip8 *c)
     }
 
     chip8_core_initialize(c->chipCore);
+    c->coreDisplayBuffer = chip8_core_getDisplayBuffer(c->chipCore);
 }
 
 // Initialize SDL2
-static void chip8_initialize_sdl2(Chip8 *c)
+static void chip8_initializeSDL2(Chip8 *c)
 {
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
         fprintf(stderr, "SDL_Init Error: %s\n", SDL_GetError());
-        exit(EXIT_SUCCESS);
+        exit(EXIT_FAILURE);
     }
 
     c->window = SDL_CreateWindow("CHIP-8",
@@ -66,11 +70,37 @@ static void chip8_initialize_sdl2(Chip8 *c)
                                 DISPLAY_HEIGHT * RESOLUTION_SCALE_BY, 0);
     if (c->window == NULL) {
         fprintf(stderr, "SDL_CreateWindow Error: %s\n", SDL_GetError());
-        exit(EXIT_SUCCESS);
+        exit(EXIT_FAILURE);
     }
 
     c->renderer = SDL_CreateRenderer(c->window, -1, SDL_RENDERER_ACCELERATED);
     if (c->renderer == NULL) {
         fprintf(stderr, "SDL_CreateRenderer Error: %s\n", SDL_GetError());
+        exit(EXIT_FAILURE);
     }
+
+    c->texture = SDL_CreateTexture(c->renderer,
+                                    SDL_PIXELFORMAT_ARGB1555,
+                                    SDL_TEXTUREACCESS_STREAMING,
+                                    DISPLAY_WIDTH,
+                                    DISPLAY_HEIGHT);
+    if (c->texture == NULL) {
+        fprintf(stderr, "SDL_CreateTexture Error: %s\n", SDL_GetError());
+        exit(EXIT_FAILURE);
+    }
+}
+
+static void chip8_renderFrame(Chip8 * c)
+{
+    void *pixels;
+    int pitch;
+
+    SDL_LockTexture(c->texture, NULL, &pixels, &pitch);
+
+    SDL_memcpy(pixels, c->coreDisplayBuffer, sizeof(c->coreDisplayBuffer[0]) * (DISPLAY_WIDTH * DISPLAY_HEIGHT));
+
+    SDL_UnlockTexture(c->texture);
+    SDL_RenderClear(c->renderer);
+    SDL_RenderCopy(c->renderer, c->texture, NULL, NULL);
+    SDL_RenderPresent(c->renderer);
 }
