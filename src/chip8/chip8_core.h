@@ -8,7 +8,7 @@
 #define DISPLAY_WIDTH   64
 #define DISPLAY_HEIGHT  32
 
-const uint16_t *chip8_core_getDisplayBuffer(const Chip8Core c);
+uint16_t *chip8_core_getDisplayBuffer(const Chip8Core c);
 
 Chip8Core chip8_core_create(void);
 void chip8_core_destroy(Chip8Core c);
