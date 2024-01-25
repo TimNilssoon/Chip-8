@@ -10,6 +10,8 @@ typedef struct {
     Chip8Core chipCore;
     SDL_Window *window;
     SDL_Renderer *renderer;
+    SDL_Texture *texture;
+    uint16_t *coreDisplayBuffer;
     bool running;
 } Chip8;
 
