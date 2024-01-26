@@ -141,7 +141,7 @@ static void loadFontSprites(Chip8Core c)
     memcpy(c->memory + FONT_SPRITE_ADDR_OFFSET, fontSprites, sizeof(fontSprites));
 }
 
-const uint16_t *chip8_core_getDisplayBuffer(const Chip8Core c)
+uint16_t *chip8_core_getDisplayBuffer(const Chip8Core c)
 {
     return c->displayBuffer;
 }
