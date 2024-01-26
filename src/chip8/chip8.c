@@ -2,7 +2,7 @@
 #include "chip8_core.h"
 #include <stdlib.h>
 
-#define RESOLUTION_SCALE_BY 30
+#define RESOLUTION_SCALE_BY 15
 
 static void chip8_initializeCore(Chip8 *c);
 static void chip8_initializeSDL2(Chip8 *c);
@@ -92,15 +92,5 @@ static void chip8_initializeSDL2(Chip8 *c)
 
 static void chip8_renderFrame(Chip8 * c)
 {
-    void *pixels;
-    int pitch;
-
-    SDL_LockTexture(c->texture, NULL, &pixels, &pitch);
-
-    SDL_memcpy(pixels, c->coreDisplayBuffer, sizeof(c->coreDisplayBuffer[0]) * (DISPLAY_WIDTH * DISPLAY_HEIGHT));
-
-    SDL_UnlockTexture(c->texture);
-    SDL_RenderClear(c->renderer);
-    SDL_RenderCopy(c->renderer, c->texture, NULL, NULL);
-    SDL_RenderPresent(c->renderer);
+    (void)c;
 }
