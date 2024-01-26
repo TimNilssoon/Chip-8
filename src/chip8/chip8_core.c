@@ -56,6 +56,9 @@ void chip8_core_destroy(Chip8Core c)
 
 void chip8_core_initialize(Chip8Core c)
 {
+    // Seed rand function with time
+    srand((unsigned int)time(NULL));
+    
     // Start program execution at ROM address
     c->pc = ROM_MEM_OFFSET;
 
@@ -280,7 +283,6 @@ void chip8_instructions_JPV0NNN(Chip8Core c)
 
 void chip8_instructions_RNDVXKK(Chip8Core c)
 {
-    srand((unsigned int)time(NULL));
     uint8_t randNum = rand() % 256;
 
     VREGISTER_X = randNum & OPCODE_KK;
