@@ -11,8 +11,16 @@ typedef struct {
     SDL_Renderer *renderer;
     SDL_Texture *texture;
     uint16_t *coreDisplayBuffer;
+
+    // Frame rate data fields
+    double deltaTime;
+    double frameStart;
+    double frameEnd;
+    float fpsTimer;
+    int frames;
 } Chip8;
 
+Chip8 *chip8_create(void);
 void chip8_initialize(Chip8 *c);
 void chip8_run(Chip8 *c);
 void chip8_destroy(Chip8 *c);

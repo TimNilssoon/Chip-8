@@ -15,6 +15,12 @@ void chip8_initialize(Chip8 *c)
 {
     chip8_initializeCore(c);
     chip8_initializeSDL2(c);
+
+    c->deltaTime = 0.0;
+    c->frameStart = 0.0;
+    c->frameEnd = 0.0;
+    c->frames = 0;
+    c->fpsTimer = 0.0f;
 }
 
 // Main program loop
@@ -23,14 +29,8 @@ void chip8_run(Chip8 *c)
 {
     SDL_Event e;
 
-    // Calculate framerate variables
-    double deltaTime = 0.0;
-    double frameStart, frameEnd;
-    int frames = 0;
-    float fpsTimer = 0.0f;
-
     while (1) {
-        frameStart = SDL_GetTicks64() / 1000;
+        c->frameStart = SDL_GetTicks64() / 1000;
         SDL_PollEvent(&e);
         if (e.type == SDL_QUIT || e.type == SDL_KEYUP)
             return;
@@ -40,18 +40,18 @@ void chip8_run(Chip8 *c)
 
         SDL_Delay(FRAME_TIME);
         
-        frameEnd = SDL_GetTicks64() / 1000;
-        deltaTime = frameEnd - frameStart;
+        c->frameEnd = SDL_GetTicks64() / 1000;
+        c->deltaTime = c->frameEnd - c->frameStart;
 
-        fpsTimer += deltaTime;
-        frames++;
+        c->fpsTimer += c->deltaTime;
+        c->frames++;
 
-        if (fpsTimer >= 1.0f) {
-            float fps = frames / fpsTimer;
+        if (c->fpsTimer >= 1.0f) {
+            float fps = c->frames / c->fpsTimer;
             printf("%.2f\n", fps);
 
-            fpsTimer = 0.0f;
-            frames = 0;
+            c->fpsTimer = 0.0f;
+            c->frames = 0;
         }
     }
 }
@@ -65,6 +65,15 @@ void chip8_destroy(Chip8 *c)
     SDL_DestroyRenderer(c->renderer);
     SDL_DestroyWindow(c->window);
     SDL_Quit();
+}
+
+Chip8 *chip8_create(void)
+{
+    Chip8 *chipPtr = malloc(sizeof(Chip8));
+    if (chipPtr == NULL)
+        return NULL;
+    
+    return chipPtr;
 }
 
 size_t chip8_loadRom(Chip8 *c, const char *filePath)

@@ -42,11 +42,11 @@ static void loadFontSprites(Chip8Core c);
 
 Chip8Core chip8_core_create(void)
 {
-    Chip8Core c = calloc(1, sizeof(struct chip8_core_t));
-    if (c == NULL)
+    Chip8Core corePtr = calloc(1, sizeof(struct chip8_core_t));
+    if (corePtr == NULL)
         return NULL;
 
-    return c;
+    return corePtr;
 }
 
 void chip8_core_destroy(Chip8Core c)
@@ -83,7 +83,7 @@ void chip8_core_cycle(Chip8Core c)
 
     if (c->soundTimer > 0) {
         c->soundTimer--;
-        // emit sound each frame
+        // emit sound frequency each frame
     }
 }
 
