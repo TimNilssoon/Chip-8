@@ -4,8 +4,8 @@
 #include <unistd.h>
 
 #define RESOLUTION_SCALE_BY 15
-#define FRAME_RATE 59
-#define FRAME_TIME (1000 / FRAME_RATE)
+#define FRAME_RATE          59
+#define FRAME_TIME          (1000 / FRAME_RATE)
 
 static void chip8_initializeCore(Chip8 *c);
 static void chip8_initializeSDL2(Chip8 *c);
