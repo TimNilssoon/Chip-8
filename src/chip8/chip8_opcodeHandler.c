@@ -3,6 +3,8 @@
 
 typedef void (*OpcodeHandlerFunc)(Chip8Core c, const uint16_t *opcode);
 
+
+// Forward declarations
 static void opcode0x0000(Chip8Core c, const uint16_t *opcode);
 static void opcode0x1000(Chip8Core c, const uint16_t *opcode);
 static void opcode0x2000(Chip8Core c, const uint16_t *opcode);

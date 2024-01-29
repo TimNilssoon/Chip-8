@@ -78,6 +78,13 @@ void chip8_core_cycle(Chip8Core c)
     chip8_opcodeHandler_execute(c);
 
     // Update timers
+    if (c->delayTimer > 0)
+        c->delayTimer--;
+
+    if (c->soundTimer > 0) {
+        c->soundTimer--;
+        // emit sound each frame
+    }
 }
 
 size_t chip8_core_loadRom(Chip8Core c, const char *filePath)
@@ -141,7 +148,7 @@ static void loadFontSprites(Chip8Core c)
     memcpy(c->memory + FONT_SPRITE_ADDR_OFFSET, fontSprites, sizeof(fontSprites));
 }
 
-const uint16_t *chip8_core_getDisplayBuffer(const Chip8Core c)
+uint16_t *chip8_core_getDisplayBuffer(const Chip8Core c)
 {
     return c->displayBuffer;
 }
@@ -286,7 +293,7 @@ void chip8_instructions_RNDVXKK(Chip8Core c)
     uint8_t randNum = rand() % 256;
 
     VREGISTER_X = randNum & OPCODE_KK;
-    printf("DEBUG: %d\n", randNum);
+    // printf("DEBUG: %d\n", randNum);
 }
 
 void chip8_instructions_SKPVX(Chip8Core c)
