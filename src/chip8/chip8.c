@@ -27,12 +27,10 @@ void chip8_initialize(Chip8 *c)
 // Calls chip8_core_cycle() and SDL2 functions
 void chip8_run(Chip8 *c)
 {
-    SDL_Event e;
-
     while (1) {
         c->frameStart = SDL_GetTicks64() / 1000;
-        SDL_PollEvent(&e);
-        if (e.type == SDL_QUIT || e.type == SDL_KEYUP)
+        SDL_PollEvent(&c->event);
+        if (c->event.type == SDL_QUIT || c->event.type == SDL_KEYUP)
             return;
 
         chip8_core_cycle(c->chipCore);

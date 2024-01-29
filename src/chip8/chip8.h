@@ -7,12 +7,13 @@
 
 typedef struct {
     Chip8Core chipCore;
+    SDL_Event event;
     SDL_Window *window;
     SDL_Renderer *renderer;
     SDL_Texture *texture;
     uint16_t *coreDisplayBuffer;
 
-    // Frame rate data fields
+    // Frame rate fields
     double deltaTime;
     double frameStart;
     double frameEnd;
