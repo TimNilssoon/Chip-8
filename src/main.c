@@ -6,7 +6,7 @@ int main(int argc, char *argv[])
 {
     if (argc != EXPECTED_ARGS) {
         fprintf(stderr, "Usage: %s <path to rom>\n", argv[0]);
-        return 1;
+        exit(EXIT_FAILURE);
     }
     
     Chip8 *chip8 = chip8_create();
@@ -19,5 +19,5 @@ int main(int argc, char *argv[])
     chip8_run(chip8);
 
     chip8_destroy(chip8);
-    return 0;
+    exit(EXIT_SUCCESS);
 }

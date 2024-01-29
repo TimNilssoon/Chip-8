@@ -58,13 +58,16 @@ void chip8_run(Chip8 *c)
 
 void chip8_destroy(Chip8 *c)
 {
-    // Clean up chip8_core
-    chip8_core_destroy(c->chipCore);
-
     // Clean up SDL2
     SDL_DestroyRenderer(c->renderer);
     SDL_DestroyWindow(c->window);
     SDL_Quit();
+
+    // Clean up chip8_core
+    chip8_core_destroy(c->chipCore);
+
+    // Lastly free Chip8 struct
+    free(c);
 }
 
 Chip8 *chip8_create(void)
