@@ -1,8 +1,11 @@
 #include "chip8.h"
 #include "chip8_core.h"
 #include <stdlib.h>
+#include <unistd.h>
 
 #define RESOLUTION_SCALE_BY 15
+#define FRAME_RATE 59
+#define FRAME_TIME (1000 / FRAME_RATE)
 
 static void chip8_initializeCore(Chip8 *c);
 static void chip8_initializeSDL2(Chip8 *c);
@@ -12,17 +15,44 @@ void chip8_initialize(Chip8 *c)
 {
     chip8_initializeCore(c);
     chip8_initializeSDL2(c);
-
-    c->running = true;
 }
 
 // Main program loop
 // Calls chip8_core_cycle() and SDL2 functions
 void chip8_run(Chip8 *c)
 {
-    while (c->running) {
+    SDL_Event e;
+
+    // Calculate framerate variables
+    double deltaTime = 0.0;
+    double frameStart, frameEnd;
+    int frames = 0;
+    float fpsTimer = 0.0f;
+
+    while (1) {
+        frameStart = SDL_GetTicks64() / 1000;
+        SDL_PollEvent(&e);
+        if (e.type == SDL_QUIT || e.type == SDL_KEYUP)
+            return;
+
         chip8_core_cycle(c->chipCore);
         chip8_renderFrame(c);
+
+        SDL_Delay(FRAME_TIME);
+        
+        frameEnd = SDL_GetTicks64() / 1000;
+        deltaTime = frameEnd - frameStart;
+
+        fpsTimer += deltaTime;
+        frames++;
+
+        if (fpsTimer >= 1.0f) {
+            float fps = frames / fpsTimer;
+            printf("%.2f\n", fps);
+
+            fpsTimer = 0.0f;
+            frames = 0;
+        }
     }
 }
 

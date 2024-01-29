@@ -3,7 +3,6 @@
 
 #include "chip8_chip8CoreType.h"
 #include <stdio.h>
-#include <stdbool.h>
 #include <SDL.h>
 
 typedef struct {
@@ -12,7 +11,6 @@ typedef struct {
     SDL_Renderer *renderer;
     SDL_Texture *texture;
     uint16_t *coreDisplayBuffer;
-    bool running;
 } Chip8;
 
 void chip8_initialize(Chip8 *c);
