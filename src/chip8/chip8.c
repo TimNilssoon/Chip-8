@@ -31,6 +31,8 @@ void chip8_run(Chip8 *c)
 {
     while (1) {
         c->frameStart = SDL_GetTicks64() / 1000;
+
+        // Handle exit event
         SDL_PollEvent(&c->event);
         if (c->event.type == SDL_QUIT)
             return;
@@ -41,6 +43,7 @@ void chip8_run(Chip8 *c)
 
         SDL_Delay(FRAME_TIME);
         
+        // Calculate frame rate
         c->frameEnd = SDL_GetTicks64() / 1000;
         c->deltaTime = c->frameEnd - c->frameStart;
 
