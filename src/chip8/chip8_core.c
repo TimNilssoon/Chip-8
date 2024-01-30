@@ -9,7 +9,7 @@
 #define V_REGS                  16
 #define STACK_SIZE              16
 #define DISPLAY_BUFFER_SIZE     (DISPLAY_WIDTH * DISPLAY_HEIGHT)
-#define KEYS                    16
+#define NUM_OF_KEYS                    0xF
 
 #define FONT_SPRITE_ADDR_OFFSET 0x50
 #define ROM_MEM_OFFSET          0x200
@@ -31,7 +31,7 @@ struct chip8_core_t {
     
     uint8_t memory[MEM_SIZE];
     uint8_t vRegisters[V_REGS];
-    uint8_t keys[KEYS];
+    uint8_t keys[NUM_OF_KEYS];
 
     uint8_t delayTimer;
     uint8_t soundTimer;
@@ -148,9 +148,19 @@ static void loadFontSprites(Chip8Core c)
     memcpy(c->memory + FONT_SPRITE_ADDR_OFFSET, fontSprites, sizeof(fontSprites));
 }
 
-uint16_t *chip8_core_getDisplayBuffer(const Chip8Core c)
+const uint16_t *chip8_core_getDisplayBuffer(const Chip8Core c)
 {
     return c->displayBuffer;
+}
+
+void chip8_core_setKey(Chip8Core c, uint8_t key)
+{
+    c->keys[key] = 0x1;
+}
+
+void chip8_core_resetKeys(Chip8Core c)
+{
+    memset(c->keys, 0, sizeof(c->keys[0]) * NUM_OF_KEYS);
 }
 
 const uint16_t *chip8_core_getOpcode(const Chip8Core c)
