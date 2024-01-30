@@ -3,18 +3,25 @@
 
 #include "chip8_chip8CoreType.h"
 #include <stdio.h>
-#include <stdbool.h>
 #include <SDL.h>
 
 typedef struct {
     Chip8Core chipCore;
+    SDL_Event event;
     SDL_Window *window;
     SDL_Renderer *renderer;
     SDL_Texture *texture;
     uint16_t *coreDisplayBuffer;
-    bool running;
+
+    // Frame rate fields
+    double deltaTime;
+    double frameStart;
+    double frameEnd;
+    float fpsTimer;
+    int frames;
 } Chip8;
 
+Chip8 *chip8_create(void);
 void chip8_initialize(Chip8 *c);
 void chip8_run(Chip8 *c);
 void chip8_destroy(Chip8 *c);

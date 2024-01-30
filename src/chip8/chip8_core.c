@@ -42,11 +42,11 @@ static void loadFontSprites(Chip8Core c);
 
 Chip8Core chip8_core_create(void)
 {
-    Chip8Core c = calloc(1, sizeof(struct chip8_core_t));
-    if (c == NULL)
+    Chip8Core corePtr = calloc(1, sizeof(struct chip8_core_t));
+    if (corePtr == NULL)
         return NULL;
 
-    return c;
+    return corePtr;
 }
 
 void chip8_core_destroy(Chip8Core c)
@@ -78,6 +78,13 @@ void chip8_core_cycle(Chip8Core c)
     chip8_opcodeHandler_execute(c);
 
     // Update timers
+    if (c->delayTimer > 0)
+        c->delayTimer--;
+
+    if (c->soundTimer > 0) {
+        c->soundTimer--;
+        // emit sound frequency each frame
+    }
 }
 
 size_t chip8_core_loadRom(Chip8Core c, const char *filePath)
@@ -286,7 +293,7 @@ void chip8_instructions_RNDVXKK(Chip8Core c)
     uint8_t randNum = rand() % 256;
 
     VREGISTER_X = randNum & OPCODE_KK;
-    printf("DEBUG: %d\n", randNum);
+    // printf("DEBUG: %d\n", randNum);
 }
 
 void chip8_instructions_SKPVX(Chip8Core c)

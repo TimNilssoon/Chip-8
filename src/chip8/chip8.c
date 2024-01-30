@@ -1,8 +1,11 @@
 #include "chip8.h"
 #include "chip8_core.h"
 #include <stdlib.h>
+#include <unistd.h>
 
 #define RESOLUTION_SCALE_BY 15
+#define FRAME_RATE          59
+#define FRAME_TIME          (1000 / FRAME_RATE)
 
 static void chip8_initializeCore(Chip8 *c);
 static void chip8_initializeSDL2(Chip8 *c);
@@ -13,28 +16,65 @@ void chip8_initialize(Chip8 *c)
     chip8_initializeCore(c);
     chip8_initializeSDL2(c);
 
-    c->running = true;
+    c->deltaTime = 0.0;
+    c->frameStart = 0.0;
+    c->frameEnd = 0.0;
+    c->frames = 0;
+    c->fpsTimer = 0.0f;
 }
 
 // Main program loop
 // Calls chip8_core_cycle() and SDL2 functions
 void chip8_run(Chip8 *c)
 {
-    while (c->running) {
+    while (1) {
+        c->frameStart = SDL_GetTicks64() / 1000;
+        SDL_PollEvent(&c->event);
+        if (c->event.type == SDL_QUIT || c->event.type == SDL_KEYUP)
+            return;
+
         chip8_core_cycle(c->chipCore);
         chip8_renderFrame(c);
+
+        SDL_Delay(FRAME_TIME);
+        
+        c->frameEnd = SDL_GetTicks64() / 1000;
+        c->deltaTime = c->frameEnd - c->frameStart;
+
+        c->fpsTimer += c->deltaTime;
+        c->frames++;
+
+        if (c->fpsTimer >= 1.0f) {
+            float fps = c->frames / c->fpsTimer;
+            printf("%.2f\n", fps);
+
+            c->fpsTimer = 0.0f;
+            c->frames = 0;
+        }
     }
 }
 
 void chip8_destroy(Chip8 *c)
 {
-    // Clean up chip8_core
-    chip8_core_destroy(c->chipCore);
-
     // Clean up SDL2
     SDL_DestroyRenderer(c->renderer);
     SDL_DestroyWindow(c->window);
     SDL_Quit();
+
+    // Clean up chip8_core
+    chip8_core_destroy(c->chipCore);
+
+    // Lastly free Chip8 struct
+    free(c);
+}
+
+Chip8 *chip8_create(void)
+{
+    Chip8 *chipPtr = malloc(sizeof(Chip8));
+    if (chipPtr == NULL)
+        return NULL;
+    
+    return chipPtr;
 }
 
 size_t chip8_loadRom(Chip8 *c, const char *filePath)
