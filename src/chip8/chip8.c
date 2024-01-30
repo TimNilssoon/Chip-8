@@ -30,7 +30,7 @@ void chip8_run(Chip8 *c)
     while (1) {
         c->frameStart = SDL_GetTicks64() / 1000;
         SDL_PollEvent(&c->event);
-        if (c->event.type == SDL_QUIT || c->event.type == SDL_KEYUP)
+        if (c->event.type == SDL_QUIT)
             return;
 
         chip8_core_cycle(c->chipCore);
