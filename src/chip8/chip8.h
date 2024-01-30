@@ -11,7 +11,8 @@ typedef struct {
     SDL_Window *window;
     SDL_Renderer *renderer;
     SDL_Texture *texture;
-    uint16_t *coreDisplayBuffer;
+    const uint8_t *keyboardState;
+    const uint16_t *coreDisplayBuffer;
 
     // Frame rate fields
     double deltaTime;
