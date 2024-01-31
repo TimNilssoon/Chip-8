@@ -1,10 +1,12 @@
 #include "chip8OpcodeHandler.h"
 #include "chip8Instructions.h"
+#include <stdint.h>
 
 typedef void (*OpcodeHandlerFunc)(Chip8Core c, const uint16_t *opcode);
 
-
 // Forward declarations
+const uint16_t *chip8Core_getOpcode(const Chip8Core c);
+
 static void opcode0x0000(Chip8Core c, const uint16_t *opcode);
 static void opcode0x1000(Chip8Core c, const uint16_t *opcode);
 static void opcode0x2000(Chip8Core c, const uint16_t *opcode);
