@@ -146,114 +146,114 @@ void chip8_handleInput(Chip8 *c)
         c->keyboardState = SDL_GetKeyboardState(NULL);
 
         if (c->keyboardState[SDL_SCANCODE_X]) {
-            chip8Core_setKey(c->chipCore, 0x0);
+            chip8Core_setKey(c->chipCore, 0x0); // 0 = x
             #if DEBUG
-            printf("DEBUG: Key pressed: %c\n", '0'); // 0 = x
+            printf("DEBUG: Key pressed: %c\n", '0');
             #endif
         }
 
         if (c->keyboardState[SDL_SCANCODE_1]) {
-            chip8Core_setKey(c->chipCore, 0x1);
+            chip8Core_setKey(c->chipCore, 0x1); // 1 = 1
             #if DEBUG
-            printf("DEBUG: Key pressed: %c\n", '1'); // 1 = 1
+            printf("DEBUG: Key pressed: %c\n", '1');
             #endif
         }
 
         if (c->keyboardState[SDL_SCANCODE_2]) {
-            chip8Core_setKey(c->chipCore, 0x2);
+            chip8Core_setKey(c->chipCore, 0x2); // 2 = 2
             #if DEBUG
-            printf("DEBUG: Key pressed: %c\n", '2'); // 2 = 2
+            printf("DEBUG: Key pressed: %c\n", '2');
             #endif
         }
 
         if (c->keyboardState[SDL_SCANCODE_3]) {
-            chip8Core_setKey(c->chipCore, 0x3);
+            chip8Core_setKey(c->chipCore, 0x3); // 3 = 3
             #if DEBUG
-            printf("DEBUG: Key pressed: %c\n", '3'); // 3 = 3
+            printf("DEBUG: Key pressed: %c\n", '3');
             #endif
         }
 
         if (c->keyboardState[SDL_SCANCODE_Q]) {
-            chip8Core_setKey(c->chipCore, 0x4);
+            chip8Core_setKey(c->chipCore, 0x4); // 4 = q
             #if DEBUG
-            printf("DEBUG: Key pressed: %c\n", '4'); // 4 = q
+            printf("DEBUG: Key pressed: %c\n", '4');
             #endif
         }
 
         if (c->keyboardState[SDL_SCANCODE_W]) {
-            chip8Core_setKey(c->chipCore, 0x5);
+            chip8Core_setKey(c->chipCore, 0x5); // 5 = w
             #if DEBUG
-            printf("DEBUG: Key pressed: %c\n", '5'); // 5 = w
+            printf("DEBUG: Key pressed: %c\n", '5');
             #endif
         }
 
         if (c->keyboardState[SDL_SCANCODE_E]) {
-            chip8Core_setKey(c->chipCore, 0x6);
+            chip8Core_setKey(c->chipCore, 0x6); // 6 = e
             #if DEBUG
-            printf("DEBUG: Key pressed: %c\n", '6'); // 6 = e
+            printf("DEBUG: Key pressed: %c\n", '6');
             #endif
         }
 
         if (c->keyboardState[SDL_SCANCODE_A]) {
-            chip8Core_setKey(c->chipCore, 0x7);
+            chip8Core_setKey(c->chipCore, 0x7); // 7 = a
             #if DEBUG
-            printf("DEBUG: Key pressed: %c\n", '7'); // 7 = a
+            printf("DEBUG: Key pressed: %c\n", '7');
             #endif
         }
 
         if (c->keyboardState[SDL_SCANCODE_S]) {
-            chip8Core_setKey(c->chipCore, 0x8);
+            chip8Core_setKey(c->chipCore, 0x8); // 8 = s
             #if DEBUG
-            printf("DEBUG: Key pressed: %c\n", '8'); // 8 = s
+            printf("DEBUG: Key pressed: %c\n", '8');
             #endif
         }
 
         if (c->keyboardState[SDL_SCANCODE_D]) {
-            chip8Core_setKey(c->chipCore, 0x9);
+            chip8Core_setKey(c->chipCore, 0x9); // 9 = d
             #if DEBUG
-            printf("DEBUG: Key pressed: %c\n", '9'); // 9 = d
+            printf("DEBUG: Key pressed: %c\n", '9');
             #endif
         }
 
         if (c->keyboardState[SDL_SCANCODE_Z]) {
-            chip8Core_setKey(c->chipCore, 0xA);
+            chip8Core_setKey(c->chipCore, 0xA); // A = z
             #if DEBUG
-            printf("DEBUG: Key pressed: %c\n", 'A'); // A = z
+            printf("DEBUG: Key pressed: %c\n", 'A');
             #endif
         }
 
         if (c->keyboardState[SDL_SCANCODE_C]) {
-            chip8Core_setKey(c->chipCore, 0xB);
+            chip8Core_setKey(c->chipCore, 0xB); // B = c
             #if DEBUG
-            printf("DEBUG: Key pressed: %c\n", 'B'); // B = c
+            printf("DEBUG: Key pressed: %c\n", 'B');
             #endif
         }
 
         if (c->keyboardState[SDL_SCANCODE_4]) {
-            chip8Core_setKey(c->chipCore, 0xC);
+            chip8Core_setKey(c->chipCore, 0xC); // C = 4
             #if DEBUG
-            printf("DEBUG: Key pressed: %c\n", 'C'); // C = 4
+            printf("DEBUG: Key pressed: %c\n", 'C');
             #endif
         }
 
         if (c->keyboardState[SDL_SCANCODE_R]) {
-            chip8Core_setKey(c->chipCore, 0xD);
+            chip8Core_setKey(c->chipCore, 0xD); // D = r
             #if DEBUG
-            printf("DEBUG: Key pressed: %c\n", 'D'); // D = r
+            printf("DEBUG: Key pressed: %c\n", 'D');
             #endif
         }
 
         if (c->keyboardState[SDL_SCANCODE_F]) {
-            chip8Core_setKey(c->chipCore, 0xE);
+            chip8Core_setKey(c->chipCore, 0xE); // E = f
             #if DEBUG
-            printf("DEBUG: Key pressed: %c\n", 'E'); // E = f
+            printf("DEBUG: Key pressed: %c\n", 'E');
             #endif
         }
 
         if (c->keyboardState[SDL_SCANCODE_V]) {
-            chip8Core_setKey(c->chipCore, 0xF);
+            chip8Core_setKey(c->chipCore, 0xF); // F = v
             #if DEBUG
-            printf("DEBUG: Key pressed: %c\n", 'F'); // F = v
+            printf("DEBUG: Key pressed: %c\n", 'F');
             #endif
         }
 
