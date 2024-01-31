@@ -36,7 +36,7 @@ void chip8_run(Chip8 *c)
 
         // Handle exit event
         SDL_PollEvent(&c->event);
-        if (c->event.type == SDL_QUIT)
+        if (c->event.type == SDL_QUIT || c->event.key.keysym.sym == SDLK_ESCAPE)
             return;
 
         chip8_handleInput(c);
