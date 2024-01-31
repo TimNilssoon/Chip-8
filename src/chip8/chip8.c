@@ -1,5 +1,5 @@
 #include "chip8.h"
-#include "chip8_core.h"
+#include "chip8Core.h"
 #include <stdlib.h>
 
 #define RESOLUTION_SCALE_BY 15
@@ -26,7 +26,7 @@ void chip8_initialize(Chip8 *c)
 }
 
 // Main program loop
-// Calls chip8_core_cycle() and SDL2 functions
+// Calls chip8Core_cycle() and SDL2 functions
 void chip8_run(Chip8 *c)
 {
     while (1) {
@@ -40,7 +40,7 @@ void chip8_run(Chip8 *c)
             return;
 
         chip8_handleInput(c);
-        chip8_core_cycle(c->chipCore);
+        chip8Core_cycle(c->chipCore);
         chip8_renderFrame(c);
 
         SDL_Delay(FRAME_TIME);
@@ -71,8 +71,8 @@ void chip8_destroy(Chip8 *c)
     SDL_DestroyWindow(c->window);
     SDL_Quit();
 
-    // Clean up chip8_core
-    chip8_core_destroy(c->chipCore);
+    // Clean up chip8Core
+    chip8Core_destroy(c->chipCore);
 
     // Lastly free Chip8 struct
     free(c);
@@ -89,20 +89,20 @@ Chip8 *chip8_create(void)
 
 size_t chip8_loadRom(Chip8 *c, const char *filePath)
 {
-    return chip8_core_loadRom(c->chipCore, filePath);
+    return chip8Core_loadRom(c->chipCore, filePath);
 }
 
-// Initialize chip8_core
+// Initialize chip8Core
 static void chip8_initializeCore(Chip8 *c)
 {
-    c->chipCore = chip8_core_create();
+    c->chipCore = chip8Core_create();
     if (c->chipCore == NULL) {
         fprintf(stderr, "Chip8 error: Could not initialize Chip-8 Core");
         exit(EXIT_FAILURE);
     }
 
-    chip8_core_initialize(c->chipCore);
-    c->coreDisplayBuffer = chip8_core_getDisplayBuffer(c->chipCore);
+    chip8Core_initialize(c->chipCore);
+    c->coreDisplayBuffer = chip8Core_getDisplayBuffer(c->chipCore);
 }
 
 // Initialize SDL2
@@ -146,112 +146,112 @@ void chip8_handleInput(Chip8 *c)
         c->keyboardState = SDL_GetKeyboardState(NULL);
 
         if (c->keyboardState[SDL_SCANCODE_X]) {
-            chip8_core_setKey(c->chipCore, 0x0);
+            chip8Core_setKey(c->chipCore, 0x0);
             #if DEBUG
             printf("DEBUG: Key pressed: %c\n", '0'); // 0 = x
             #endif
         }
 
         if (c->keyboardState[SDL_SCANCODE_1]) {
-            chip8_core_setKey(c->chipCore, 0x1);
+            chip8Core_setKey(c->chipCore, 0x1);
             #if DEBUG
             printf("DEBUG: Key pressed: %c\n", '1'); // 1 = 1
             #endif
         }
 
         if (c->keyboardState[SDL_SCANCODE_2]) {
-            chip8_core_setKey(c->chipCore, 0x2);
+            chip8Core_setKey(c->chipCore, 0x2);
             #if DEBUG
             printf("DEBUG: Key pressed: %c\n", '2'); // 2 = 2
             #endif
         }
 
         if (c->keyboardState[SDL_SCANCODE_3]) {
-            chip8_core_setKey(c->chipCore, 0x3);
+            chip8Core_setKey(c->chipCore, 0x3);
             #if DEBUG
             printf("DEBUG: Key pressed: %c\n", '3'); // 3 = 3
             #endif
         }
 
         if (c->keyboardState[SDL_SCANCODE_Q]) {
-            chip8_core_setKey(c->chipCore, 0x4);
+            chip8Core_setKey(c->chipCore, 0x4);
             #if DEBUG
             printf("DEBUG: Key pressed: %c\n", '4'); // 4 = q
             #endif
         }
 
         if (c->keyboardState[SDL_SCANCODE_W]) {
-            chip8_core_setKey(c->chipCore, 0x5);
+            chip8Core_setKey(c->chipCore, 0x5);
             #if DEBUG
             printf("DEBUG: Key pressed: %c\n", '5'); // 5 = w
             #endif
         }
 
         if (c->keyboardState[SDL_SCANCODE_E]) {
-            chip8_core_setKey(c->chipCore, 0x6);
+            chip8Core_setKey(c->chipCore, 0x6);
             #if DEBUG
             printf("DEBUG: Key pressed: %c\n", '6'); // 6 = e
             #endif
         }
 
         if (c->keyboardState[SDL_SCANCODE_A]) {
-            chip8_core_setKey(c->chipCore, 0x7);
+            chip8Core_setKey(c->chipCore, 0x7);
             #if DEBUG
             printf("DEBUG: Key pressed: %c\n", '7'); // 7 = a
             #endif
         }
 
         if (c->keyboardState[SDL_SCANCODE_S]) {
-            chip8_core_setKey(c->chipCore, 0x8);
+            chip8Core_setKey(c->chipCore, 0x8);
             #if DEBUG
             printf("DEBUG: Key pressed: %c\n", '8'); // 8 = s
             #endif
         }
 
         if (c->keyboardState[SDL_SCANCODE_D]) {
-            chip8_core_setKey(c->chipCore, 0x9);
+            chip8Core_setKey(c->chipCore, 0x9);
             #if DEBUG
             printf("DEBUG: Key pressed: %c\n", '9'); // 9 = d
             #endif
         }
 
         if (c->keyboardState[SDL_SCANCODE_Z]) {
-            chip8_core_setKey(c->chipCore, 0xA);
+            chip8Core_setKey(c->chipCore, 0xA);
             #if DEBUG
             printf("DEBUG: Key pressed: %c\n", 'A'); // A = z
             #endif
         }
 
         if (c->keyboardState[SDL_SCANCODE_C]) {
-            chip8_core_setKey(c->chipCore, 0xB);
+            chip8Core_setKey(c->chipCore, 0xB);
             #if DEBUG
             printf("DEBUG: Key pressed: %c\n", 'B'); // B = c
             #endif
         }
 
         if (c->keyboardState[SDL_SCANCODE_4]) {
-            chip8_core_setKey(c->chipCore, 0xC);
+            chip8Core_setKey(c->chipCore, 0xC);
             #if DEBUG
             printf("DEBUG: Key pressed: %c\n", 'C'); // C = 4
             #endif
         }
 
         if (c->keyboardState[SDL_SCANCODE_R]) {
-            chip8_core_setKey(c->chipCore, 0xD);
+            chip8Core_setKey(c->chipCore, 0xD);
             #if DEBUG
             printf("DEBUG: Key pressed: %c\n", 'D'); // D = r
             #endif
         }
 
         if (c->keyboardState[SDL_SCANCODE_F]) {
-            chip8_core_setKey(c->chipCore, 0xE);
+            chip8Core_setKey(c->chipCore, 0xE);
             #if DEBUG
             printf("DEBUG: Key pressed: %c\n", 'E'); // E = f
             #endif
         }
 
         if (c->keyboardState[SDL_SCANCODE_V]) {
-            chip8_core_setKey(c->chipCore, 0xF);
+            chip8Core_setKey(c->chipCore, 0xF);
             #if DEBUG
             printf("DEBUG: Key pressed: %c\n", 'F'); // F = v
             #endif
@@ -259,7 +259,7 @@ void chip8_handleInput(Chip8 *c)
 
     }
     else
-        chip8_core_resetKeys(c->chipCore);
+        chip8Core_resetKeys(c->chipCore);
 }
 
 static void chip8_renderFrame(Chip8 * c)

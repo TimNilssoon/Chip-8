@@ -1,7 +1,7 @@
 #ifndef CHIP8_H
 #define CHIP8_H
 
-#include "chip8_chip8CoreType.h"
+#include "chip8Chip8CoreType.h"
 #include "../dbg.h"
 #include <stdio.h>
 #include <SDL.h>
