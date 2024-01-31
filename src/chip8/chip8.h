@@ -2,6 +2,7 @@
 #define CHIP8_H
 
 #include "chip8_chip8CoreType.h"
+#include "../dbg.h"
 #include <stdio.h>
 #include <SDL.h>
 
@@ -14,12 +15,14 @@ typedef struct {
     const uint8_t *keyboardState;
     const uint16_t *coreDisplayBuffer;
 
+    #if DEBUG
     // Frame rate fields
     double deltaTime;
     double frameStart;
     double frameEnd;
     float fpsTimer;
     int frames;
+    #endif
 } Chip8;
 
 Chip8 *chip8_create(void);

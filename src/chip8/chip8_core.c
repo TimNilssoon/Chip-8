@@ -1,6 +1,7 @@
 #include "chip8_core.h"
 #include "chip8_opcodeHandler.h"
 #include "chip8_instructions.h"
+#include "../dbg.h"
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
@@ -303,7 +304,9 @@ void chip8_instructions_RNDVXKK(Chip8Core c)
     uint8_t randNum = rand() % 256;
 
     VREGISTER_X = randNum & OPCODE_KK;
-    // printf("DEBUG: %d\n", randNum);
+    #if DEBUG
+    printf("DEBUG: Random number: %d\n", randNum);
+    #endif
 }
 
 void chip8_instructions_SKPVX(Chip8Core c)
