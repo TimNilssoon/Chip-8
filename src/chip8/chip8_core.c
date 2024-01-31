@@ -325,9 +325,19 @@ void chip8_instructions_LDVXDT(Chip8Core c)
 
 void chip8_instructions_LDVXK(Chip8Core c)
 {
-    // Temporarily voiding c for compiler's sake
-    (void)c;
-    // TODO: Implement instruction
+    // If i == 0xF: no key is pressed, rerun same instruction until a key is pressed
+    // Else: Set v register at index x to the first button pressed (low to high)
+    int i = 0x0;
+    for (; i < NUM_OF_KEYS + 1; i++)
+        if (c->keys[i])
+            break;
+
+    if (i == NUM_OF_KEYS + 1) {
+        c->pc -= 2;
+        return;
+    }
+
+    VREGISTER_X = i;
 }
 
 void chip8_instructions_LDDTVX(Chip8Core c)
