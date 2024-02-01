@@ -13,3 +13,7 @@ bin/
 
 # Roms
 roms/
+
+# Hidden files
+.*
+*/
