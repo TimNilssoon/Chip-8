@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
+#include <stdbool.h>
 
 #define MEM_SIZE 4096
 #define V_REGS 16
@@ -21,6 +22,8 @@
 #define OPCODE_NNN (c->opcode & 0x0FFF)
 #define OPCODE_KK (c->opcode & 0x00FF)
 #define OPCODE_N (c->opcode & 0x000F)
+#define OPCODE_X ((c->opcode & 0x0F00) >> 8)
+#define OPCODE_Y ((c->opcode & 0x00F0) >> 4)
 
 struct chip8Core_t {
     uint16_t stack[STACK_SIZE];
@@ -360,7 +363,7 @@ void chip8Instructions_ADDIVX(Chip8Core c)
 
 void chip8Instructions_LDFVX(Chip8Core c)
 {
-    c->iRegister = FONT_SPRITE_ADDR_OFFSET + 0x5 * VREGISTER_X;
+    c->iRegister = FONT_SPRITE_ADDR_OFFSET + (VREGISTER_X * 0x5);
 }
 
 void chip8Instructions_LDBVX(Chip8Core c)
@@ -373,17 +376,48 @@ void chip8Instructions_LDBVX(Chip8Core c)
 
 void chip8Instructions_LDIVX(Chip8Core c)
 {
-    memcpy(c->memory + c->iRegister, c->vRegisters, VREGISTER_X + 1);
+    memcpy(c->memory + c->iRegister, c->vRegisters, OPCODE_X + 1);
 }
 
 void chip8Instructions_LDVXI(Chip8Core c)
 {
-    memcpy(c->vRegisters, c->memory + c->iRegister, VREGISTER_X + 1);
+    memcpy(c->vRegisters, c->memory + c->iRegister, OPCODE_X + 1);
 }
 
 void chip8Instructions_DRWVXVY(Chip8Core c)
 {
-    // Temporarily voiding c for compiler's sake
-    (void)c;
-    // TODO: Implement instruction
+    // Copy address of selected sprite
+    uint8_t *sprite = &c->memory[c->iRegister];
+    int xPos = VREGISTER_X;
+    int yPos = VREGISTER_Y;
+    bool pixelUnset = false;
+    uint16_t *currentDB;
+    uint16_t xorResult;
+
+    // If xPos is greater than DISPLAY_WIDTH - 1; wrap around to left of display
+    if (xPos > DISPLAY_WIDTH - 1)
+        xPos %= DISPLAY_WIDTH;
+    
+    // If yPos is greater than DISPLAY_WIDTH - 1; wrap around to top of display
+    if (yPos > DISPLAY_WIDTH - 1)
+        yPos %= DISPLAY_HEIGHT;
+
+    // Draw value of OPCODE_N bytes
+    for (int i = 0; i < OPCODE_N; i++, sprite++) {
+        // XOR the contents of displayBuffer at (y * display width + x) with sprite
+        currentDB = &c->displayBuffer[((yPos + i) * (DISPLAY_WIDTH)) + xPos];
+        xorResult = *currentDB ^ *sprite;
+        
+        // If any pixels in the display buffer were changed to unset; set VF register to 1, else 0
+        if ((*currentDB & xorResult) != *currentDB)
+            pixelUnset = true;
+
+        // Update display buffer
+        *currentDB = xorResult;
+    }
+
+    if (pixelUnset)
+        c->vRegisters[0xF] = 0x1;
+    else
+        c->vRegisters[0xF] = 0x0;
 }
